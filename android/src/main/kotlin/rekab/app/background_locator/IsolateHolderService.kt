@@ -122,11 +122,6 @@ class IsolateHolderService : Service() {
     private fun getMainActivityClass(context: Context): Class<*>? {
         val packageName = context.packageName
         val launchIntent = context.packageManager.getLaunchIntentForPackage(packageName)
-        return try {
-            Class.forName(launchIntent?.component?.className!!)
-        } catch (e: ClassNotFoundException) {
-            e.printStackTrace()
-            null
-        }
+        return launchIntent?.component?.className?.let { Class.forName(it) } ?: null
     }
 }
