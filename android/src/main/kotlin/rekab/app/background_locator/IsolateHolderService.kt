@@ -90,8 +90,9 @@ class IsolateHolderService : Service() {
         isRunning = true
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        if (intent.action == ACTION_SHUTDOWN) {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        intent?.let {
+           if (it.action == ACTION_SHUTDOWN) {
             (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
                 newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKELOCK_TAG).apply {
                     if (isHeld) {
@@ -102,17 +103,18 @@ class IsolateHolderService : Service() {
             stopForeground(true)
             stopSelf()
             isRunning = false
-        } else if (intent.action == ACTION_START) {
+        } else if (it.action == ACTION_START) {
             notificationTitle = intent.getStringExtra(ARG_NOTIFICATION_TITLE)
             notificationMsg = intent.getStringExtra(ARG_NOTIFICATION_MSG)
             val iconNameDefault = "ic_launcher"
-            var iconName = intent.getStringExtra(ARG_NOTIFICATION_ICON)
+            var iconName = it.getStringExtra(ARG_NOTIFICATION_ICON)
             if (iconName == null || iconName.isEmpty()) {
                 iconName = iconNameDefault
             }
             icon = resources.getIdentifier(iconName, "mipmap", packageName)
-            wakeLockTime = intent.getIntExtra(ARG_WAKE_LOCK_TIME, 60) * 60 * 1000L
+            wakeLockTime = it.getIntExtra(ARG_WAKE_LOCK_TIME, 60) * 60 * 1000L
             start()
+        }
         }
         return START_STICKY;
     }
