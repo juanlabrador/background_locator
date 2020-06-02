@@ -74,7 +74,7 @@ class LocatorService : MethodChannel.MethodCallHandler, JobIntentService() {
                         .getLong(CALLBACK_DISPATCHER_HANDLE_KEY, 0)
                 val callbackInfo = FlutterCallbackInformation.lookupCallbackInformation(callbackHandle);
                 if (callbackInfo == null) {
-                  Log.e(TAG, "Fatal: failed to find callback");
+                  Log.e("LocatorService", "Fatal: failed to find callback");
                   return;
                 }
                 // We need flutter view to handle callback, so if it is not available we have to create a
