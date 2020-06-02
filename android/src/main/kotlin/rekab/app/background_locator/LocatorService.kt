@@ -72,8 +72,11 @@ class LocatorService : MethodChannel.MethodCallHandler, JobIntentService() {
                         SHARED_PREFERENCES_KEY,
                         Context.MODE_PRIVATE)
                         .getLong(CALLBACK_DISPATCHER_HANDLE_KEY, 0)
-                val callbackInfo = FlutterCallbackInformation.lookupCallbackInformation(callbackHandle)
-
+                val callbackInfo = FlutterCallbackInformation.lookupCallbackInformation(callbackHandle);
+                if (callbackInfo == null) {
+                  Log.e(TAG, "Fatal: failed to find callback");
+                  return;
+                }
                 // We need flutter view to handle callback, so if it is not available we have to create a
                 // Flutter background view without any view
                 backgroundFlutterView = FlutterNativeView(context, true)
