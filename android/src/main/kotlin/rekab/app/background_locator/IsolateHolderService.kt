@@ -93,28 +93,28 @@ class IsolateHolderService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.let {
            if (it.action == ACTION_SHUTDOWN) {
-            (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
-                newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKELOCK_TAG).apply {
-                    if (isHeld) {
-                        release()
+                (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
+                    newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKELOCK_TAG).apply {
+                        if (isHeld) {
+                            release()
+                        }
                     }
                 }
+                stopForeground(true)
+                stopSelf()
+                isRunning = false
+            } else if (it.action == ACTION_START) {
+                notificationTitle = intent.getStringExtra(ARG_NOTIFICATION_TITLE)
+                notificationMsg = intent.getStringExtra(ARG_NOTIFICATION_MSG)
+                val iconNameDefault = "ic_launcher"
+                var iconName = it.getStringExtra(ARG_NOTIFICATION_ICON)
+                if (iconName == null || iconName.isEmpty()) {
+                    iconName = iconNameDefault
+                }
+                icon = resources.getIdentifier(iconName, "mipmap", packageName)
+                wakeLockTime = it.getIntExtra(ARG_WAKE_LOCK_TIME, 60) * 60 * 1000L
+                start()
             }
-            stopForeground(true)
-            stopSelf()
-            isRunning = false
-        } else if (it.action == ACTION_START) {
-            notificationTitle = intent.getStringExtra(ARG_NOTIFICATION_TITLE)
-            notificationMsg = intent.getStringExtra(ARG_NOTIFICATION_MSG)
-            val iconNameDefault = "ic_launcher"
-            var iconName = it.getStringExtra(ARG_NOTIFICATION_ICON)
-            if (iconName == null || iconName.isEmpty()) {
-                iconName = iconNameDefault
-            }
-            icon = resources.getIdentifier(iconName, "mipmap", packageName)
-            wakeLockTime = it.getIntExtra(ARG_WAKE_LOCK_TIME, 60) * 60 * 1000L
-            start()
-        }
         }
         return START_STICKY;
     }
