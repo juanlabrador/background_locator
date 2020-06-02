@@ -93,16 +93,16 @@ class IsolateHolderService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.let {
            if (it.action == ACTION_SHUTDOWN) {
-                (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
-                    newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKELOCK_TAG).apply {
-                        if (isHeld) {
-                            release()
-                        }
-                    }
-                }
-                stopForeground(true)
-                stopSelf()
-                isRunning = false
+               (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
+                   newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKELOCK_TAG).apply {
+                       if (isHeld) {
+                           release()
+                       }
+                   }
+               }
+               stopForeground(true)
+               stopSelf()
+               isRunning = false
             } else if (it.action == ACTION_START) {
                 notificationTitle = intent.getStringExtra(ARG_NOTIFICATION_TITLE)
                 notificationMsg = intent.getStringExtra(ARG_NOTIFICATION_MSG)
