@@ -98,8 +98,11 @@ class BackgroundLocatorPlugin
                 result?.error(msg, null, null)
             }
 
-            val initialDataMap = args[ARG_INIT_DATA_CALLBACK] as Map<*, *>
-            setDataCallback(context, INIT_DATA_CALLBACK_KEY, initialDataMap)
+            if (args[ARG_INIT_DATA_CALLBACK] != null) {
+                val initialDataMap = args[ARG_INIT_DATA_CALLBACK] as Map<*, *>
+                setDataCallback(context, INIT_DATA_CALLBACK_KEY, initialDataMap)
+            }
+
             startIsolateService(context, settings)
 
             client.requestLocationUpdates(getLocationRequest(settings),
