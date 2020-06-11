@@ -7,7 +7,7 @@ import io.flutter.plugins.pathprovider.PathProviderPlugin
 import io.flutter.view.FlutterMain
 import rekab.app.background_locator.LocatorService
 
-class Application : FlutterApplication(), PluginRegistrantCallback {
+class AppApplication : FlutterApplication(), PluginRegistrantCallback {
     override fun onCreate() {
         super.onCreate()
         LocatorService.setPluginRegistrant(this)
