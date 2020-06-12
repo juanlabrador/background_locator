@@ -73,10 +73,14 @@ class LocatorService : MethodChannel.MethodCallHandler, JobIntentService() {
                         SHARED_PREFERENCES_KEY,
                         Context.MODE_PRIVATE)
                         .getLong(CALLBACK_DISPATCHER_HANDLE_KEY, 0)
-                val callbackInfo = FlutterCallbackInformation.lookupCallbackInformation(callbackHandle);
+                val callbackInfo = try {
+                    FlutterCallbackInformation.lookupCallbackInformation(callbackHandle);
+                } catch (e: java.lang.Exception) {
+                    null
+                }
+
                 if (callbackInfo == null) {
-                  Log.e("LocatorService", "Fatal: failed to find callback");
-                  return;
+                    Log.e("LocatorService", "Fatal: failed to find callback");
                 }
                 // We need flutter view to handle callback, so if it is not available we have to create a
                 // Flutter background view without any view
@@ -84,8 +88,11 @@ class LocatorService : MethodChannel.MethodCallHandler, JobIntentService() {
 
                 val args = FlutterRunArguments()
                 args.bundlePath = FlutterMain.findAppBundlePath()
-                args.entrypoint = callbackInfo.callbackName
-                args.libraryPath = callbackInfo.callbackLibraryPath
+
+                if (callbackInfo != null) {
+                    args.entrypoint = callbackInfo.callbackName
+                    args.libraryPath = callbackInfo.callbackLibraryPath
+                }
 
                 backgroundFlutterView!!.runFromBundle(args)
                 IsolateHolderService.setBackgroundFlutterViewManually(backgroundFlutterView)
