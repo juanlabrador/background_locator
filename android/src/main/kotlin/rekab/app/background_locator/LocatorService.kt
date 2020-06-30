@@ -99,11 +99,11 @@ class LocatorService : MethodChannel.MethodCallHandler, JobIntentService() {
                     args.libraryPath = callbackInfo.callbackLibraryPath
                 }
 
-                backgroundFlutterView!!.runFromBundle(args)
+                backgroundFlutterView?.runFromBundle(args)
                 IsolateHolderService.setBackgroundFlutterViewManually(backgroundFlutterView)
             }
 
-            pluginRegistrantCallback?.registerWith(backgroundFlutterView!!.pluginRegistry)
+            pluginRegistrantCallback?.registerWith(backgroundFlutterView?.pluginRegistry)
         }
 
         backgroundChannel = MethodChannel(backgroundFlutterView, BACKGROUND_CHANNEL_ID)

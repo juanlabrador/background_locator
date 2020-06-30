@@ -256,16 +256,19 @@ class BackgroundLocatorPlugin
 
         @JvmStatic
         fun registerAfterBoot(context: Context) {
-            val settings = PreferencesManager.getSettings(context)
+            val disposeCallback = BackgroundLocatorPlugin.getCallbackHandle(context, DISPOSE_CALLBACK_HANDLE_KEY)
+            if (disposeCallback > 0) {
+                val settings = PreferencesManager.getSettings(context)
 
-            val plugin = BackgroundLocatorPlugin()
-            plugin.context = context
-            plugin.locatorClient = LocationServices.getFusedLocationProviderClient(context)
+                val plugin = BackgroundLocatorPlugin()
+                plugin.context = context
+                plugin.locatorClient = LocationServices.getFusedLocationProviderClient(context)
 
-            initializeService(context, settings)
-            registerLocator(context,
-                    plugin.locatorClient,
-                    settings, null)
+                initializeService(context, settings)
+                registerLocator(context,
+                        plugin.locatorClient,
+                        settings, null)
+            }
         }
     }
 
