@@ -30,10 +30,12 @@ import rekab.app.background_locator.Keys.Companion.ARG_INIT_CALLBACK
 import rekab.app.background_locator.Keys.Companion.ARG_INIT_DATA_CALLBACK
 import rekab.app.background_locator.Keys.Companion.ARG_DISPOSE_CALLBACK
 import rekab.app.background_locator.Keys.Companion.ARG_CALLBACK_DISPATCHER
+import rekab.app.background_locator.Keys.Companion.ARG_NOTIFICATION_CHANNEL_NAME
 import rekab.app.background_locator.Keys.Companion.ARG_DISTANCE_FILTER
 import rekab.app.background_locator.Keys.Companion.ARG_INTERVAL
 import rekab.app.background_locator.Keys.Companion.ARG_NOTIFICATION_CALLBACK
 import rekab.app.background_locator.Keys.Companion.ARG_NOTIFICATION_ICON
+import rekab.app.background_locator.Keys.Companion.ARG_NOTIFICATION_ICON_COLOR
 import rekab.app.background_locator.Keys.Companion.ARG_NOTIFICATION_MSG
 import rekab.app.background_locator.Keys.Companion.ARG_NOTIFICATION_TITLE
 import rekab.app.background_locator.Keys.Companion.ARG_SETTINGS
@@ -113,9 +115,11 @@ class BackgroundLocatorPlugin
         private fun startIsolateService(context: Context, settings: Map<*, *>) {
             val intent = Intent(context, IsolateHolderService::class.java)
             intent.action = IsolateHolderService.ACTION_START
+            intent.putExtra(ARG_NOTIFICATION_CHANNEL_NAME, settings[ARG_NOTIFICATION_CHANNEL_NAME] as String)
             intent.putExtra(ARG_NOTIFICATION_TITLE, settings[ARG_NOTIFICATION_TITLE] as String)
             intent.putExtra(ARG_NOTIFICATION_MSG, settings[ARG_NOTIFICATION_MSG] as String)
             intent.putExtra(ARG_NOTIFICATION_ICON, settings[ARG_NOTIFICATION_ICON] as String)
+            intent.putExtra(ARG_NOTIFICATION_ICON_COLOR, settings[ARG_NOTIFICATION_ICON_COLOR] as Long)
 
             if (settings.containsKey(ARG_WAKE_LOCK_TIME)) {
                 intent.putExtra(ARG_WAKE_LOCK_TIME, settings[ARG_WAKE_LOCK_TIME] as Int)
@@ -208,9 +212,9 @@ class BackgroundLocatorPlugin
         fun setCallbackHandle(context: Context, key: String, handle: Long?) {
             if (handle == null) {
                 context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
-                    .edit()
-                    .remove(key)
-                    .apply()
+                        .edit()
+                        .remove(key)
+                        .apply()
                 return
             }
 
@@ -221,12 +225,12 @@ class BackgroundLocatorPlugin
         }
 
         @JvmStatic
-        fun setDataCallback(context: Context, key: String, data: Map<*,*>?) {
+        fun setDataCallback(context: Context, key: String, data: Map<*, *>?) {
             if (data == null) {
                 context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
-                    .edit()
-                    .remove(key)
-                    .apply()
+                        .edit()
+                        .remove(key)
+                        .apply()
                 return
             }
             val dataStr = Gson().toJson(data)
@@ -243,7 +247,7 @@ class BackgroundLocatorPlugin
         }
 
         @JvmStatic
-        fun getDataCallback(context: Context, key: String): Map<*,*> {
+        fun getDataCallback(context: Context, key: String): Map<*, *> {
             val initialDataStr = context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
                     .getString(key, null)
             val type = object : TypeToken<Map<*, *>>() {}.type
@@ -311,7 +315,7 @@ class BackgroundLocatorPlugin
     }
 
     override fun onNewIntent(intent: Intent?): Boolean {
-        if(intent?.action != NOTIFICATION_ACTION) {
+        if (intent?.action != NOTIFICATION_ACTION) {
             // this is not our notification
             return false
         }

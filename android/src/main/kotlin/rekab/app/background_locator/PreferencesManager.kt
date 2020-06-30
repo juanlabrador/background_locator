@@ -37,6 +37,11 @@ class PreferencesManager {
             val settings = map[Keys.ARG_SETTINGS] as Map<*, *>
 
             sharedPreferences.edit()
+                    .putString(Keys.ARG_NOTIFICATION_CHANNEL_NAME,
+                            settings[Keys.ARG_NOTIFICATION_CHANNEL_NAME] as String)
+                    .apply()
+
+            sharedPreferences.edit()
                     .putString(Keys.ARG_NOTIFICATION_TITLE,
                             settings[Keys.ARG_NOTIFICATION_TITLE] as String)
                     .apply()
@@ -49,6 +54,11 @@ class PreferencesManager {
             sharedPreferences.edit()
                     .putString(Keys.ARG_NOTIFICATION_ICON,
                             settings[Keys.ARG_NOTIFICATION_ICON] as String)
+                    .apply()
+
+            sharedPreferences.edit()
+                    .putLong(Keys.ARG_NOTIFICATION_ICON_COLOR,
+                            settings[Keys.ARG_NOTIFICATION_ICON_COLOR] as Long)
                     .apply()
 
             sharedPreferences.edit()
@@ -91,6 +101,9 @@ class PreferencesManager {
 
             val settings = HashMap<String, Any?>()
 
+            settings[Keys.ARG_NOTIFICATION_CHANNEL_NAME] =
+                    sharedPreferences.getString(Keys.ARG_NOTIFICATION_CHANNEL_NAME, "")
+
             settings[Keys.ARG_NOTIFICATION_TITLE] =
                     sharedPreferences.getString(Keys.ARG_NOTIFICATION_TITLE, "")
 
@@ -99,6 +112,9 @@ class PreferencesManager {
 
             settings[Keys.ARG_NOTIFICATION_ICON] =
                     sharedPreferences.getString(Keys.ARG_NOTIFICATION_ICON, "")
+
+            settings[Keys.ARG_NOTIFICATION_ICON_COLOR] =
+                    sharedPreferences.getLong(Keys.ARG_NOTIFICATION_ICON_COLOR, 0)
 
             settings[Keys.ARG_INTERVAL] =
                     sharedPreferences.getInt(Keys.ARG_INTERVAL, 0)

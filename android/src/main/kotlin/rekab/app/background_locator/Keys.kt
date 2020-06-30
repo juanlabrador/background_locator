@@ -34,6 +34,8 @@ class Keys {
         val METHOD_PLUGIN_IS_REGISTER_LOCATION_UPDATE = "LocatorPlugin.isRegisterLocationUpdate"
 
         @JvmStatic
+        val ARG_IS_MOCKED = "is_mocked"
+        @JvmStatic
         val ARG_LATITUDE = "latitude"
         @JvmStatic
         val ARG_LONGITUDE = "longitude"
@@ -69,12 +71,20 @@ class Keys {
         val ARG_INTERVAL = "interval"
         @JvmStatic
         val ARG_DISTANCE_FILTER = "distanceFilter"
+
+        @JvmStatic
+        val ARG_NOTIFICATION_CHANNEL_NAME = "notificationChannelName"
+
         @JvmStatic
         val ARG_NOTIFICATION_TITLE = "notificationTitle"
         @JvmStatic
         val ARG_NOTIFICATION_MSG = "notificationMsg"
         @JvmStatic
         val ARG_NOTIFICATION_ICON = "notificationIcon"
+
+        @JvmStatic
+        val ARG_NOTIFICATION_ICON_COLOR = "notificationIconColor"
+
         @JvmStatic
         val ARG_WAKE_LOCK_TIME = "wakeLockTime"
 
