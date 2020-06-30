@@ -34,7 +34,6 @@ import rekab.app.background_locator.Keys.Companion.METHOD_SERVICE_INITIALIZED
 import rekab.app.background_locator.Keys.Companion.SHARED_PREFERENCES_KEY
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
-import android.util.Log
 
 class LocatorService : MethodChannel.MethodCallHandler, JobIntentService() {
     private val queue = ArrayDeque<HashMap<Any, Any>>()
